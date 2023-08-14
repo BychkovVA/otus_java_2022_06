@@ -5,6 +5,8 @@ import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import ru.otus.crm.annotations.Id;
+
 
 public class EntityClassMetaDataImpl<T> implements EntityClassMetaData {
     private final Class<T> targetClass;
