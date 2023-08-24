@@ -64,7 +64,7 @@ public class Phone implements Cloneable {
     public Client getClient() {
         return client;
     }
-    // метод для установления связи с клиентом
+
     public void setClient(Client client) {
         this.client = client;
     }
@@ -74,7 +74,7 @@ public class Phone implements Cloneable {
         return "phone{" +
                 "id=" + id +
                 ", number='" + number + '\'' +
-                ", client='" + client.getId() + '\'' +
+                ", client='" + (client != null ? client.getId(): "") + '\'' +
                 '}';
     }
 

@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -24,12 +26,12 @@ public class Client implements Cloneable {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "address_id")
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = ru.otus.crm.model.Address.class, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     @OneToMany(mappedBy = "client", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Phone> phones = new HashSet<>();
+    private List<Phone> phones = new ArrayList<>();
 
 
     public Client(String name) {
@@ -43,7 +45,7 @@ public class Client implements Cloneable {
         this.address = address;
     }
 
-    public Client(String name, Address address, Set<Phone> phones) {
+    public Client(String name, Address address, List<Phone> phones) {
         this.id = null;
         this.name = name;
         this.address = address;
@@ -63,7 +65,7 @@ public class Client implements Cloneable {
         this.address = address;
     }
 
-    public Client(Long id, String name, Address address, Set<Phone> phones) {
+    public Client(Long id, String name, Address address, List<Phone> phones) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -73,40 +75,11 @@ public class Client implements Cloneable {
     @Override
     public Client clone() {
         Client clientCopy = new Client(this.id, this.name, this.address);
-        this.phones.forEach(phone -> clientCopy.addPhone(new Phone(phone.getNumber())));
+        for (Phone phone : phones) {
+            clientCopy.addPhone(new Phone(phone.getNumber()));
+        }
         return clientCopy;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public Set<Phone> getPhones() {
-        return phones;
-    }
-
-    public void setPhones(Set<Phone> phones) {
-        this.phones = phones;
+        //return new Client(this.id, this.name, this.address, this.phones);
     }
 
     public void addPhone(Phone phone) {

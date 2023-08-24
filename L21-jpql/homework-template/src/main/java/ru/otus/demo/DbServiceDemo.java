@@ -12,6 +12,8 @@ import ru.otus.crm.model.Client;
 import ru.otus.crm.model.Phone;
 import ru.otus.crm.service.DbServiceClientImpl;
 
+import java.util.List;
+
 public class DbServiceDemo {
 
     private static final Logger log = LoggerFactory.getLogger(DbServiceDemo.class);
@@ -37,11 +39,12 @@ public class DbServiceDemo {
 
         var address = new Address("Someone's street");
 
-        var clientFirst = dbServiceClient.saveClient(new Client("dbServiceFirst", address));
+       var clientFirst = dbServiceClient.saveClient(new Client("dbServiceFirst", address));
 
         clientFirst.addPhone(new Phone("+1234567890"));
         clientFirst.addPhone(new Phone("+1234567891"));
         clientFirst.addPhone(new Phone("+1234567892"));
+
 
         dbServiceClient.saveClient(clientFirst);
 
@@ -49,6 +52,8 @@ public class DbServiceDemo {
         var clientSecond = dbServiceClient.saveClient(new Client("dbServiceSecond", address2));
         clientSecond.addPhone(new Phone("+0987654321"));
         dbServiceClient.saveClient(clientSecond);
+
+
 
         var clientSecondSelected = dbServiceClient.getClient(clientSecond.getId())
                 .orElseThrow(() -> new RuntimeException("Client not found, id:" + clientSecond.getId()));
@@ -61,5 +66,7 @@ public class DbServiceDemo {
 
         log.info("All clients");
         dbServiceClient.findAll().forEach(client -> log.info("client:{}", client));
+
+
     }
 }

@@ -24,7 +24,7 @@ create table client
     id   bigint not null primary key,
     name varchar(50),
     address_id bigint,
-    FOREIGN KEY (address_id) REFERENCES address (Id)
+    FOREIGN KEY (address_id) REFERENCES address (id)
 );
 
 create table phone
@@ -32,5 +32,5 @@ create table phone
     id   bigint not null primary key,
     client_id bigint,
     number varchar(50),
-    FOREIGN KEY (client_id) REFERENCES client (Id)
+    FOREIGN KEY (client_id) REFERENCES client (id)
 );
