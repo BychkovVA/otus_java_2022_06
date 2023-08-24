@@ -1,24 +1,24 @@
 package ru.otus.crm.model;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "phone")
 public class Phone implements Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "number")
     private String number;
-
-    @ManyToOne (fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id")
-    private Client client;
 
     public Phone() {
     }
@@ -28,45 +28,10 @@ public class Phone implements Cloneable {
         this.number = number;
     }
 
-    public Phone(String number, Client client) {
-        this.id = null;
-        this.number = number;
-        this.client = client;
-    }
 
     public Phone(Long id, String number) {
         this.id = id;
         this.number = number;
-    }
-
-    public Phone(Long id, String number, Client client) {
-        this.id = id;
-        this.number = number;
-        this.client = client;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
     }
 
     @Override
@@ -74,7 +39,6 @@ public class Phone implements Cloneable {
         return "phone{" +
                 "id=" + id +
                 ", number='" + number + '\'' +
-                ", client='" + (client != null ? client.getId(): "") + '\'' +
                 '}';
     }
 

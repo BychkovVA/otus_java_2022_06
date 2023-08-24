@@ -54,7 +54,6 @@ public class DbServiceDemo {
         dbServiceClient.saveClient(clientSecond);
 
 
-
         var clientSecondSelected = dbServiceClient.getClient(clientSecond.getId())
                 .orElseThrow(() -> new RuntimeException("Client not found, id:" + clientSecond.getId()));
         log.info("clientSecondSelected:{}", clientSecondSelected);

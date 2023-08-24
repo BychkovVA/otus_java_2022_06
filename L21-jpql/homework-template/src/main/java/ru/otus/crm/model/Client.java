@@ -7,9 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -26,13 +24,14 @@ public class Client implements Cloneable {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL, targetEntity = ru.otus.crm.model.Address.class, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToMany(mappedBy = "client", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Phone> phones = new ArrayList<>();
 
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, updatable = false)
+    private List<Phone> phones = new ArrayList<>();
 
     public Client(String name) {
         this.id = null;
@@ -41,26 +40,6 @@ public class Client implements Cloneable {
 
     public Client(String name, Address address) {
         this.id = null;
-        this.name = name;
-        this.address = address;
-    }
-
-    public Client(String name, Address address, List<Phone> phones) {
-        this.id = null;
-        this.name = name;
-        this.address = address;
-        this.phones = phones;
-    }
-
-    public Client(Long id, String name) {
-        this.id = id;
-        this.name = name;
-        this.address = null;
-        this.phones = null;
-    }
-
-    public Client(Long id, String name, Address address) {
-        this.id = id;
         this.name = name;
         this.address = address;
     }
@@ -74,17 +53,11 @@ public class Client implements Cloneable {
 
     @Override
     public Client clone() {
-        Client clientCopy = new Client(this.id, this.name, this.address);
-        for (Phone phone : phones) {
-            clientCopy.addPhone(new Phone(phone.getNumber()));
-        }
-        return clientCopy;
-        //return new Client(this.id, this.name, this.address, this.phones);
+        return new Client(this.id, this.name, this.address, this.phones);
     }
 
     public void addPhone(Phone phone) {
         phones.add(phone);
-        phone.setClient(this);
     }
 
     @Override
